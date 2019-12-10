@@ -1,0 +1,42 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+p {
+  margin: 10px 0 10px !important;
+}
+
+.info-box {
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.125), 0 1px 3px rgba(0, 0, 0, 0.2);
+  border-radius: 0.25rem;
+  background: #17a589;
+  display: flex;
+  margin-bottom: 1rem;
+  min-height: 80px;
+  padding: 0.5rem;
+  position: relative;
+}
+.info-box .info-box-icon {
+  border-radius: 0.25rem;
+  align-items: center;
+  display: flex;
+  font-size: 1.875rem;
+  justify-content: center;
+  text-align: center;
+  width: 70px;
+  background: #337ab7;
+}
+.info-box .info-box-icon > img {
+  max-width: 100%;
+}
+
+.info-box .info-box-content {
+  flex: 1;
+  padding: 5px 10px;
+}
+
+.info-box .info-box-number {
+  display: block;
+  font-weight: 700;
+}

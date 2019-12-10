@@ -1,0 +1,29 @@
+{
+  "name": "pms",
+  "version": "0.0.0",
+  "description": "Simple Password Managment System Application",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "dotenv": "^8.2.0",
+    "ejs": "~2.6.1",
+    "express": "~4.16.1",
+    "express-validator": "^6.3.0",
+    "http-errors": "~1.6.3",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.7.14",
+    "morgan": "~1.9.1",
+    "node-localstorage": "^2.1.5",
+    "validator": "^12.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.1"
+  },
+  "engines": {
+    "node": ">=10.0.0"
+  }
+}
