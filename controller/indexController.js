@@ -224,7 +224,27 @@ exports.deleteAdmin = async function(req, res, next) {
   res.redirect("/admin");
 };
 
-exports.updateAdmin = function(req, res, next) {
+exports.editAdmin = async function(req, res, next) {
+  const passId = req.params.id;
+  const userInfo = await User.findById(passId);
+
+  res.render("editUser", {
+    title: "Edit User",
+    data: userInfo,
+    id: passId
+  });
+};
+
+exports.updateAdmin = async function(req, res, next) {
+  const id = req.body.id;
+  const updateName = req.body.edit_username;
+  const updateEmail = req.body.edit_email;
+
+  await User.findByIdAndUpdate(id, {
+    name: updateName,
+    email: updateEmail
+  });
+
   res.redirect("/admin");
 };
 

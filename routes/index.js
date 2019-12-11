@@ -104,11 +104,17 @@ router.get(
   indexCollection.deleteAdmin
 );
 
-/* UPDATE admin dashboard page. */
+//* UPDATE admin dashboard page. */
 router.get(
   "/admin/edit/:id",
   indexCollection.checkLoginUser,
   indexCollection.checkAdmin,
+  indexCollection.editAdmin
+);
+
+router.post(
+  "/editUser",
+  indexCollection.checkLoginUser,
   indexCollection.updateAdmin
 );
 
