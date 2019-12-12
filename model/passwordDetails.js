@@ -13,6 +13,9 @@ const passwordDetailsSchema = new mongoose.Schema({
   date: {
     type: Date,
     default: Date.now
+  },
+  author: {
+    type: String
   }
 });
 

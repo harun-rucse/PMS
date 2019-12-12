@@ -108,20 +108,34 @@ exports.signup = async function(req, res, next) {
 };
 
 exports.getPasswordCategory = async function(req, res, next) {
-  const passwordCategory = await PasswordCategory.find();
+  const loginUser = localStorage.getItem("loginUser");
+  const checkAdmin = (await User.findOne({ name: loginUser })).role === "admin";
+  let passwordCategory;
+
+  if (checkAdmin) {
+    passwordCategory = await PasswordCategory.find();
+  } else {
+    passwordCategory = await PasswordCategory.find({ author: loginUser });
+  }
+
   res.render("passwordCategory", {
     title: "password Category",
     message: "",
     type: "",
     data: passwordCategory,
-    ID: ""
+    ID: "",
+    loginUser: loginUser
   });
 };
 
 exports.postPasswordCategory = async function(req, res, next) {
   try {
+    let passwordCategory;
+    const loginUser = localStorage.getItem("loginUser");
     const getPasswordCategory = req.body.addNewCategory;
-    const passwordCategory = await PasswordCategory.find();
+    passwordCategory = await PasswordCategory.find({ author: loginUser });
+    const checkAdmin =
+      (await User.findOne({ name: loginUser })).role === "admin";
 
     if (!getPasswordCategory) {
       res.render("passwordCategory", {
@@ -129,18 +143,26 @@ exports.postPasswordCategory = async function(req, res, next) {
         message: "Enter password category name",
         type: "danger",
         data: passwordCategory,
-        ID: ""
+        ID: "",
+        loginUser: loginUser
       });
     } else {
       await PasswordCategory.create(req.body);
-      const passwordCategory = await PasswordCategory.find();
+      if (checkAdmin) {
+        passwordCategory = await PasswordCategory.find();
+      } else {
+        passwordCategory = await PasswordCategory.find({
+          author: loginUser
+        });
+      }
 
       res.render("passwordCategory", {
         title: "password Category",
         message: "password Category added successfully",
         type: "success",
         data: passwordCategory,
-        ID: ""
+        ID: "",
+        loginUser: loginUser
       });
     }
   } catch (err) {
@@ -156,32 +178,52 @@ exports.postPasswordCategory = async function(req, res, next) {
 };
 
 exports.getPasswordDetails = async function(req, res, next) {
-  const passwordCategory = await PasswordCategory.find();
-  const passwordList = await PasswordDetails.find();
+  const loginUser = localStorage.getItem("loginUser");
+  const checkAdmin = (await User.findOne({ name: loginUser })).role === "admin";
+  let passwordCategory, passwordList;
+
+  if (checkAdmin) {
+    passwordCategory = await PasswordCategory.find();
+    passwordList = await PasswordDetails.find();
+  } else {
+    passwordCategory = await PasswordCategory.find({ author: loginUser });
+    passwordList = await PasswordDetails.find({ author: loginUser });
+  }
 
   res.render("passwordDetails", {
     title: "password Details",
     data: passwordCategory,
-    value: passwordList
+    value: passwordList,
+    loginUser: loginUser
   });
 };
 
 exports.postPasswordDetails = async function(req, res, next) {
-  const passwordCategory = await PasswordCategory.find();
+  let passwordCategory, passwordList;
+  const loginUser = localStorage.getItem("loginUser");
+  const checkAdmin = (await User.findOne({ name: loginUser })).role === "admin";
   await PasswordDetails.create(req.body);
-  const passwordList = await PasswordDetails.find();
+
+  if (checkAdmin) {
+    passwordCategory = await PasswordCategory.find();
+    passwordList = await PasswordDetails.find();
+  } else {
+    passwordCategory = await PasswordCategory.find({ author: loginUser });
+    passwordList = await PasswordDetails.find({ author: loginUser });
+  }
 
   res.render("passwordDetails", {
     title: "password Details",
     data: passwordCategory,
-    value: passwordList
+    value: passwordList,
+    loginUser: loginUser
   });
 };
 
 exports.dashboard = async function(req, res, next) {
   try {
-    const passCat = await PasswordCategory.find();
     const loginUser = localStorage.getItem("loginUser");
+    const passCat = await PasswordCategory.find({ author: loginUser });
     const userName = await User.findOne({ name: loginUser });
 
     if (userName && userName.role === "admin") {
@@ -238,9 +280,9 @@ exports.deleteUserAccount = async function(req, res, next) {
 
 exports.admin = async function(req, res, next) {
   try {
-    const totalUser = await User.find().length;
-    const totalCat = await PasswordCategory.find().length;
-    const totalDetail = await PasswordDetails.find().length;
+    const totalUser = await (await User.find()).length;
+    const totalCat = await (await PasswordCategory.find()).length;
+    const totalDetail = await (await PasswordDetails.find()).length;
 
     const users = await User.find();
     const loginUser = localStorage.getItem("loginUser");
