@@ -6,19 +6,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Dashboard</title>
+    <title><%= title %></title>
 
     <!-- Fonts -->
     <link
       rel="stylesheet"
-      href="assets/plugins/font-awesome/4.7.0/css/font-awesome.min.css"
+      href="/assets/plugins/font-awesome/4.7.0/css/font-awesome.min.css"
     />
-
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
-    />
-
     <link
       rel="stylesheet"
       href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700"
@@ -27,7 +21,7 @@
     <!-- Styles -->
     <link
       rel="stylesheet"
-      href="assets/plugins/bootstrap/css/bootstrap.min.css"
+      href="/assets/plugins/bootstrap/css/bootstrap.min.css"
     />
     <link
       href="https://fonts.googleapis.com/css?family=Bad+Script&amp;display=swap"
@@ -65,21 +59,13 @@
 
         <div class="collapse navbar-collapse" id="app-navbar-collapse">
           <!-- Left Side Of Navbar -->
+          <ul class="nav navbar-nav"></ul>
 
           <!-- Right Side Of Navbar -->
           <ul class="nav navbar-nav navbar-right">
             <li class="nav navbar-nav">
-              <a href="/passwordCategory"> Password Category</a>
+              <a href="/dashboard"> Dashboard</a>
             </li>
-
-            <li class="nav navbar-nav">
-              <a href="/passwordDetails"> Password Details</a>
-            </li>
-
-            <li class="nav navbar-nav">
-              <a href="/dashboard"> Hello <%= loginUser %></a>
-            </li>
-
             <!-- Authentication Links -->
             <li>
               <a href="/logout"> <i class="fa fa-sign-in"></i> LogOut</a>
@@ -91,58 +77,60 @@
 
     <h2 class="text-center"><%= title %></h2>
     <br /><br />
-
     <div class="container">
       <div class="container">
         <div class="row">
-          <div class="col-md-10 col-md-offset-1">
+          <div class="col-md-6 col-md-offset-3">
             <div class="panel panel-primary">
-              <div class="panel-heading">User Information</div>
+              <div class="panel-heading">Edit User Profile</div>
               <div class="panel-body">
-                <div class="col-md-6">
-                  <h3>Name: <%=record.name%></h3>
-                  <h3>Email: <%=record.email%></h3>
-                </div>
-                <div class="col-md-6">
-                  <a
-                    class="btn btn-danger"
-                    href="dashboard/delete/<%=record._id%>"
-                    >Delete Account</a
-                  >
-                  <a
-                    class="btn btn-primary "
-                    href="dashboard/edit/<%=record._id%>"
-                    >Edit Account</a
-                  >
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+                <form
+                  class="form-horizontal"
+                  role="form"
+                  method="POST"
+                  action="/editUserAccount/"
+                >
+                  <input type="hidden" name="id" value="<%= id %>" />
+                  <div class="form-group">
+                    <label for="username" class="col-md-4 control-label"
+                      >User Name</label
+                    >
 
-    <div class="container">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-10 col-md-offset-1">
-            <div class="panel panel-primary">
-              <div class="panel-heading">Password Category List</div>
-              <div class="panel-body">
-                <table class="table table-hover">
-                  <thead>
-                    <tr>
-                      <th scope="col">Password Category</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <% data.forEach(function(row){ %>
-                    <tr>
-                      <td><%= row.addNewCategory %></td>
-                    </tr>
-                    <% }) %>
-                  </tbody>
-                </table>
+                    <div class="col-md-6">
+                      <input
+                        id="pass_cat"
+                        type="text"
+                        class="form-control"
+                        name="edit_username"
+                        value="<%=data.name%>"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="email" class="col-md-4 control-label"
+                      >Email</label
+                    >
+
+                    <div class="col-md-6">
+                      <input
+                        id="pass_cat"
+                        type="text"
+                        class="form-control"
+                        name="edit_email"
+                        value="<%=data.email%>"
+                      />
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <div class="col-md-6 col-md-offset-4">
+                      <button type="submit" class="btn btn-primary">
+                        <i class="fa fa-btn fa-sign-in"></i> Edit
+                      </button>
+                    </div>
+                  </div>
+                </form>
               </div>
             </div>
           </div>

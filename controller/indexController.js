@@ -92,10 +92,10 @@ exports.signup = async function(req, res, next) {
     const newUser = await User.create(req.body);
 
     const getUserID = newUser._id;
-    const usenName = newUser.name;
+    const userName = newUser.name;
     const token = jwt.sign({ userID: getUserID }, "loginToken");
     localStorage.setItem("userToken", token);
-    localStorage.setItem("loginUser", usenName);
+    localStorage.setItem("loginUser", userName);
 
     res.redirect("/dashboard");
   } catch (err) {
@@ -179,26 +179,68 @@ exports.postPasswordDetails = async function(req, res, next) {
 };
 
 exports.dashboard = async function(req, res, next) {
-  const passCat = await PasswordCategory.find();
-  const loginUser = localStorage.getItem("loginUser");
-  const userName = await User.findOne({ name: loginUser });
+  try {
+    const passCat = await PasswordCategory.find();
+    const loginUser = localStorage.getItem("loginUser");
+    const userName = await User.findOne({ name: loginUser });
 
-  if (userName && userName.role === "admin") {
-    res.redirect("/admin");
-  } else {
-    res.render("dashboard", {
-      title: "User Dashboard",
-      loginUser: loginUser,
-      data: passCat
+    if (userName && userName.role === "admin") {
+      res.redirect("/admin");
+    } else {
+      console.log(userName.name);
+
+      res.render("dashboard", {
+        title: "User Dashboard",
+        loginUser: loginUser,
+        data: passCat,
+        record: userName
+      });
+    }
+  } catch (err) {
+    res.render("error", {
+      message: "Server Not Found",
+      error: err
     });
   }
 };
 
+exports.editUserAccount = async function(req, res, next) {
+  const userId = req.params.id;
+  const userInfo = await User.findById(userId);
+
+  res.render("editUserAccount", {
+    title: "Edit User",
+    data: userInfo,
+    id: userId
+  });
+};
+
+exports.updateUserAccount = async function(req, res, next) {
+  const id = req.body.id;
+  const updateName = req.body.edit_username;
+  const updateEmail = req.body.edit_email;
+
+  localStorage.setItem("loginUser", updateName);
+
+  await User.findByIdAndUpdate(id, {
+    name: updateName,
+    email: updateEmail
+  });
+
+  res.redirect("/dashboard");
+};
+
+exports.deleteUserAccount = async function(req, res, next) {
+  await User.findByIdAndDelete(req.params.id);
+
+  res.redirect("/logout");
+};
+
 exports.admin = async function(req, res, next) {
   try {
-    const totalUser = await (await User.find()).length;
-    const totalCat = await (await PasswordCategory.find()).length;
-    const totalDetail = await (await PasswordDetails.find()).length;
+    const totalUser = await User.find().length;
+    const totalCat = await PasswordCategory.find().length;
+    const totalDetail = await PasswordDetails.find().length;
 
     const users = await User.find();
     const loginUser = localStorage.getItem("loginUser");

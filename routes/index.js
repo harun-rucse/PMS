@@ -88,6 +88,26 @@ router.get(
   indexCollection.dashboard
 );
 
+//* UPDATE user dashboard page. */
+router.get(
+  "/dashboard/edit/:id",
+  indexCollection.checkLoginUser,
+  indexCollection.editUserAccount
+);
+
+router.post(
+  "/editUserAccount",
+  indexCollection.checkLoginUser,
+  indexCollection.updateUserAccount
+);
+
+/* DELETE user dashboard page. */
+router.get(
+  "/dashboard/delete/:id",
+  indexCollection.checkLoginUser,
+  indexCollection.deleteUserAccount
+);
+
 /* GET admin dashboard page. */
 router.get(
   "/admin",
