@@ -223,7 +223,7 @@ exports.postPasswordDetails = async function(req, res, next) {
 exports.dashboard = async function(req, res, next) {
   try {
     const loginUser = localStorage.getItem("loginUser");
-    const passCat = await PasswordCategory.find({ author: loginUser });
+    const passDet = await PasswordDetails.find({ author: loginUser });
     const userName = await User.findOne({ name: loginUser });
 
     if (userName && userName.role === "admin") {
@@ -234,7 +234,7 @@ exports.dashboard = async function(req, res, next) {
       res.render("dashboard", {
         title: "User Dashboard",
         loginUser: loginUser,
-        data: passCat,
+        data: passDet,
         record: userName
       });
     }
@@ -283,6 +283,7 @@ exports.admin = async function(req, res, next) {
     const totalUser = await (await User.find()).length;
     const totalCat = await (await PasswordCategory.find()).length;
     const totalDetail = await (await PasswordDetails.find()).length;
+    const passDet = await PasswordDetails.find();
 
     const users = await User.find();
     const loginUser = localStorage.getItem("loginUser");
@@ -293,12 +294,13 @@ exports.admin = async function(req, res, next) {
       loginUser: loginUser,
       users: totalUser,
       category: totalCat,
-      details: totalDetail
+      details: totalDetail,
+      records: passDet
     });
   } catch (err) {
-    res.status(400).render("admin", {
-      title: "Admin Dashboard",
-      data: undefined
+    res.status(400).render("error", {
+      message: "Admin Dashboard",
+      error: err
     });
   }
 };

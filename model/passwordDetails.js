@@ -10,6 +10,10 @@ const passwordDetailsSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please provied a password details"]
   },
+  projectName: {
+    type: String,
+    default: "Unnamed project"
+  },
   date: {
     type: Date,
     default: Date.now

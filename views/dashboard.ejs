@@ -121,25 +121,77 @@
         </div>
       </div>
     </div>
-
+    <!--PasswordDetails-->
     <div class="container">
       <div class="container">
         <div class="row">
           <div class="col-md-10 col-md-offset-1">
             <div class="panel panel-primary">
-              <div class="panel-heading">Password Category List</div>
+              <div class="panel-heading">Password Details List</div>
               <div class="panel-body">
                 <table class="table table-hover">
                   <thead>
                     <tr>
-                      <th scope="col">Password Category</th>
+                      <th scope="col">Category Name</th>
+                      <th scope="col">Project Name</th>
+                      <th scope="col">Show</th>
                     </tr>
                   </thead>
                   <tbody>
                     <% data.forEach(function(row){ %>
                     <tr>
-                      <td><%= row.addNewCategory %></td>
+                      <td><%= row.addPasswordCategory %></td>
+                      <td><%= row.projectName %></td>
+                      <td>
+                        <button
+                          type="button"
+                          class="btn btn-primary"
+                          data-toggle="modal"
+                          data-target="#myModal<%= row._id %>"
+                        >
+                          <i class="fa fa-eye" aria-hidden="true"></i>
+                        </button>
+                      </td>
                     </tr>
+                    <!-- Modal -->
+                    <div
+                      class="modal fade"
+                      id="myModal<%= row._id %>"
+                      tabindex="-1"
+                      role="dialog"
+                      aria-labelledby="exampleModalLabel"
+                      aria-hidden="true"
+                    >
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">
+                              <%= row.projectName %>
+                            </h5>
+                            <button
+                              type="button"
+                              class="close"
+                              data-dismiss="modal"
+                              aria-label="Close"
+                            >
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            <p><%= row.passwordDatail %></p>
+                          </div>
+                          <div class="modal-footer">
+                            <button
+                              type="button"
+                              class="btn btn-danger"
+                              data-dismiss="modal"
+                            >
+                              Close
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                     <% }) %>
                   </tbody>
                 </table>
